@@ -9,12 +9,12 @@ import java.util.Date;
 
 @Service
 public class CuotaPagoService {
-    private final CuotaPagoRepository cuotaPagoRepository;
 
     @Autowired
-    public CuotaPagoService(CuotaPagoRepository cuotaPagoRepository) {
-        this.cuotaPagoRepository = cuotaPagoRepository;
-    }
+    private CuotaPagoRepository cuotaPagoRepository;
+
+
+
 
     public void generarCuotas(Long estudiante, BigDecimal montoTotal, int numeroCuotas) {
         BigDecimal montoCuota = montoTotal.divide(BigDecimal.valueOf(numeroCuotas), 2, BigDecimal.ROUND_HALF_UP);

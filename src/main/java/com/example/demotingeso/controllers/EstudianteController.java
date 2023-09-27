@@ -3,35 +3,43 @@ package com.example.demotingeso.controllers;
 import com.example.demotingeso.entities.Estudiante;
 import com.example.demotingeso.services.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/estudiantes/")
-    public class EstudianteController {
-        private final EstudianteService estudianteService;
+@Controller
+@RequestMapping("/estudiantes")
+public class EstudianteController {
+    @Autowired
+    private EstudianteService estudianteService;
 
 
-        @Autowired
-        public EstudianteController(EstudianteService estudianteService) {
-            this.estudianteService = estudianteService;
-        }
+   /* @GetMapping("/registro")
+    public String mostrarFormularioRegistro(org.springframework.ui.Model model) {
+        model.addAttribute("estudiante", new Estudiante());
+        return "registro";
+    }*/
 
-        @PostMapping("/registrar")
-        public Estudiante registrarEstudiante(@RequestBody Estudiante estudiante) {
-            return estudianteService.registrarEstudiante(estudiante);
-        }
 
-        @GetMapping("/{id}")
-        public Estudiante obtenerEstudiantePorId(@PathVariable Long id) {
-            return estudianteService.obtenerEstudiantePorId(id);
-        }
-
-        @GetMapping("/todos")
-        public List<Estudiante> obtenerTodosLosEstudiantes() {
-            return estudianteService.obtenerTodosLosEstudiantes();
-        }
+    @PostMapping("/registro")
+    public String procesarFormularioRegistro(@ModelAttribute Estudiante estudiante) {
+        System.out.println(estudiante);
+        estudianteService.registrarEstudiante(estudiante);
+        return "index";
     }
+
+    @GetMapping("/lista")
+    public String mostrarListaEstudiantes(org.springframework.ui.Model model) {
+
+        List<Estudiante> estudiantes = estudianteService.obtenerTodosLosEstudiantes();
+        model.addAttribute("estudiantes", estudiantes);
+        System.out.printf(estudiantes.get(2).toString());
+        return "listaEstudiante";
+    }
+}
+
 
