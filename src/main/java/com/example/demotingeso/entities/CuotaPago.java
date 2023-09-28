@@ -3,36 +3,65 @@ package com.example.demotingeso.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "cuota_pago")
 public class CuotaPago {
+    private BigDecimal monto;
+    private int numeroCuota;
+    private LocalDate fechaVencimiento;
+    private boolean pagada;
+    private Estudiante estudiante;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "monto")
-    private BigDecimal monto;
-
-    @Column(name = "fecha_vencimiento")
-    @Temporal(TemporalType.DATE)
-    private Date fechaVencimiento;
-
-    @ManyToOne
-    @JoinColumn(name = "estudiante_id")
-    private Estudiante estudiante;
-
-    public void setEstudiante(Long estudiante) {
+    public BigDecimal getMonto() {
+        return monto;
     }
 
-    public void setMonto(BigDecimal montoCuota) {
+    public void setMonto(BigDecimal monto) {
+        this.monto = monto;
     }
 
-    public void setFechaVencimiento(Date date) {
+    public int getNumeroCuota() {
+        return numeroCuota;
     }
 
-    // Getters y setters
+    public void setNumeroCuota(int numeroCuota) {
+        this.numeroCuota = numeroCuota;
+    }
+
+    public LocalDate getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(LocalDate fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public boolean isPagada() {
+        return pagada;
+    }
+
+    public void setPagada(boolean pagada) {
+        this.pagada = pagada;
+    }
+
+    public Estudiante getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
+
 

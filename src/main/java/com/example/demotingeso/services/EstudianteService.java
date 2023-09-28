@@ -16,7 +16,7 @@ public class EstudianteService {
     private EstudianteRepository estudianteRepository;
 
     @Autowired
-    public EstudianteService(EstudianteRepository estudianteRepository) {
+    public EstudianteService() {
         this.estudianteRepository = estudianteRepository;
     }
 
@@ -57,5 +57,7 @@ public class EstudianteService {
             return false;
         }
     }
+
+
 
 }

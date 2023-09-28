@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.List;
+
 
 @Entity
 @Table (name = "estudiante")
@@ -32,5 +35,32 @@ public class Estudiante {
 
     private int anoEgresoColegio;
     private String nombreColegio;
+
+
+
+// ...
+    Estudiante estudiante = getEstudiante();
+     // Reemplaza 1L con el ID del estudiante que deseas obtener
+
+    int anoEgreso = estudiante.getAnoEgreso();
+
+    // Obtiene la fecha actual
+    LocalDate fechaActual = LocalDate.now();
+
+    // Obtiene el año actual
+    int anoActual = fechaActual.getYear();
+
+    // Calcula los años transcurridos desde que egresó
+    int anosDesdeEgreso = anoActual - anoEgreso;
+
+    public String getTipoColegioProcedencia() {
+        return tipoColegioDeProcedencia;
+    }
+    public void setTipoColegioProcedencia(String tipoColegioProcedencia) {
+        this.tipoColegioDeProcedencia = tipoColegioProcedencia;
+    }
+
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
+    private List<CuotaPago> cuotasPagos;
 
 }

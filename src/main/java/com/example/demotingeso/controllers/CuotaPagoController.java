@@ -1,11 +1,14 @@
 package com.example.demotingeso.controllers;
 
 import com.example.demotingeso.entities.Estudiante;
+import com.example.demotingeso.repositories.CuotaPagoRepository;
 import com.example.demotingeso.services.CuotaPagoService;
 import com.example.demotingeso.services.GenerarCuotasRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.demotingeso.services.CuotaPagoService;
+
 import java.math.BigDecimal;
 
 
@@ -13,6 +16,7 @@ import java.math.BigDecimal;
 @RequestMapping("/cuotas-pago")
 public class CuotaPagoController {
     private final CuotaPagoService cuotaPagoService;
+
 
     @Autowired
     public CuotaPagoController(CuotaPagoService cuotaPagoService) {
@@ -33,6 +37,14 @@ public class CuotaPagoController {
 
         return ResponseEntity.ok("Cuotas generadas correctamente.");
     }
+    @PostMapping("/generar-cuotas/{estudianteId}")
+    public String generarCuotasDePago(@PathVariable Long estudianteId) {
+        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(estudianteId);
+        cuotaPagoService.generarCuotasDePago(estudiante);
+        return "redirect:/estudiantes/lista";
+    }
+
+
 
 
 
