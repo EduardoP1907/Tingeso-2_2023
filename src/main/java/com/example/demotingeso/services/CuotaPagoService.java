@@ -3,11 +3,8 @@ package com.example.demotingeso.services;
 import com.example.demotingeso.entities.CuotaPago;
 import com.example.demotingeso.entities.Estudiante;
 import com.example.demotingeso.repositories.CuotaPagoRepository;
-import com.example.demotingeso.repositories.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,21 +12,23 @@ import java.time.LocalDate;
 
 @Service
 public class CuotaPagoService {
-    private final EstudianteRepository estudianteRepository;
+    private final EstudianteService estudianteService;
     private final CuotaPagoRepository cuotaPagoRepository;
 
     @Autowired
-    public CuotaPagoService(EstudianteRepository estudianteRepository, CuotaPagoRepository cuotaPagoRepository) {
-        this.estudianteRepository = estudianteRepository;
+    public CuotaPagoService(EstudianteService estudianteService, CuotaPagoRepository cuotaPagoRepository) {
+        this.estudianteService =  estudianteService;
         this.cuotaPagoRepository = cuotaPagoRepository;
     }
 
-    public void generarCuotasDePago(Estudiante estudiante) {
+    public BigDecimal generarCuotasDePago(Long estudianteId) {
+        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(estudianteId);
         // Obtiene el tipo de colegio de procedencia del estudiante como una cadena de texto
         String tipoColegioProcedencia = estudiante.getTipoColegioProcedencia();
 
+
         // Obtiene los años desde que egresó del colegio
-        int anosDesdeEgreso = estudiante.getAnosDesdeEgreso();
+        int anosDesdeEgreso = estudianteService.anosDesdeEgreso(estudiante);
 
         // Define el monto de la matrícula y el arancel de estudio
         BigDecimal montoMatricula = BigDecimal.valueOf(70000);
@@ -62,7 +61,7 @@ public class CuotaPagoService {
         // Ahora puedes calcular el número de cuotas y el monto de cada cuota según tus reglas
 
         // Por ejemplo, generamos 12 cuotas mensuales
-        int numeroCuotas = 12;
+        int numeroCuotas = 10;
         BigDecimal montoCuota = montoTotalConDescuentos.divide(BigDecimal.valueOf(numeroCuotas), 2, RoundingMode.HALF_UP);
         LocalDate fechaVencimiento = LocalDate.now().plusMonths(1); // Primera cuota vence en un mes
 
@@ -78,14 +77,9 @@ public class CuotaPagoService {
 
             fechaVencimiento = fechaVencimiento.plusMonths(1); // Siguiente cuota en el próximo mes
         }
+        return montoMatricula;
     }
 
-    @PostMapping("/generar-cuotas/{estudianteId}")
-    public String generarCuotasDePago(@PathVariable Long estudianteId) {
-        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(estudianteId);
-        cuotaPagoService.generarCuotasDePago(estudiante);
-        return "redirect:/estudiantes/lista";
-    }
 
 
 }

@@ -10,7 +10,9 @@ public class CuotaPago {
     private BigDecimal monto;
     private int numeroCuota;
     private LocalDate fechaVencimiento;
+    @Column(nullable = false)
     private boolean pagada;
+    @ManyToOne
     private Estudiante estudiante;
     @Id
     private Long id;

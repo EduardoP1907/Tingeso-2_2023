@@ -1,15 +1,11 @@
 package com.example.demotingeso.controllers;
 
-import com.example.demotingeso.entities.Estudiante;
-import com.example.demotingeso.repositories.CuotaPagoRepository;
 import com.example.demotingeso.services.CuotaPagoService;
-import com.example.demotingeso.services.GenerarCuotasRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.example.demotingeso.services.CuotaPagoService;
-
-import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -26,21 +22,11 @@ public class CuotaPagoController {
 
     // Otros métodos relacionados con cuotas de pago
 
-    @PostMapping("/generar")
-    public ResponseEntity<String> generarCuotas(@RequestBody GenerarCuotasRequest request) {
-        // Implementa la lógica para obtener el estudiante y otros datos necesarios
-        Long estudiante = request.getEstudianteId();
-        BigDecimal montoTotal = request.getMontoTotal();
-        int numeroCuotas = request.getNumeroCuotas();
 
-        cuotaPagoService.generarCuotas(estudiante, montoTotal, numeroCuotas);
 
-        return ResponseEntity.ok("Cuotas generadas correctamente.");
-    }
     @PostMapping("/generar-cuotas/{estudianteId}")
     public String generarCuotasDePago(@PathVariable Long estudianteId) {
-        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(estudianteId);
-        cuotaPagoService.generarCuotasDePago(estudiante);
+        cuotaPagoService.generarCuotasDePago(estudianteId);
         return "redirect:/estudiantes/lista";
     }
 

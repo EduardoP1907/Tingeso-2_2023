@@ -6,6 +6,7 @@ import com.example.demotingeso.repositories.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,16 +28,14 @@ public class EstudianteService {
     public ArrayList<Estudiante> obtenerestudianteporut(){
         return (ArrayList<Estudiante>) estudianteRepository.findAll();
     }
-    public Estudiante obtenerEstudiantePorId(Long id) {
-        return estudianteRepository.findById(id).orElse(null);
-    }
 
 
     public List<Estudiante> obtenerTodosLosEstudiantes() {
+
         return estudianteRepository.findAll();
     }
 
-    public Estudiante obtenerEstudiante(Long estudianteId) {
+    public Estudiante obtenerEstudiantePorId(Long estudianteId) {
         // Implementa la lógica para obtener un estudiante por su ID
         Optional<Estudiante> estudianteOptional = estudianteRepository.findById(estudianteId);
 
@@ -57,6 +56,26 @@ public class EstudianteService {
             return false;
         }
     }
+
+
+    public int anosDesdeEgreso(Estudiante estudiante) {
+
+    // Reemplaza 1L con el ID del estudiante que deseas obtener
+
+        int anoEgreso = estudiante.getAnoEgresoColegio();
+
+    // Obtiene la fecha actual
+         LocalDate fechaActual = LocalDate.now();
+
+    // Obtiene el año actual
+        int anoActual = fechaActual.getYear();
+
+    // Calcula los años transcurridos desde que egresó
+        int anosDesdeEgreso = anoActual - anoEgreso;
+
+        return anosDesdeEgreso;
+    }
+
 
 
 
