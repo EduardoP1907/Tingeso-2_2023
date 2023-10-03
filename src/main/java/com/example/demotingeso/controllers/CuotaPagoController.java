@@ -35,9 +35,5 @@ public class CuotaPagoController {
         return cuotaPagoService.listarCuotasDeEstudiante(estudianteId);
     }
 
-
-
-
-
 }
 
