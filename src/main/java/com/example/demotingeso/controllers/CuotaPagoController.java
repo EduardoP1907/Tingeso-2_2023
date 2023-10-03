@@ -1,11 +1,11 @@
 package com.example.demotingeso.controllers;
 
+import com.example.demotingeso.entities.CuotaPago;
 import com.example.demotingeso.services.CuotaPagoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -28,6 +28,11 @@ public class CuotaPagoController {
     public String generarCuotasDePago(@PathVariable Long estudianteId) {
         cuotaPagoService.generarCuotasDePago(estudianteId);
         return "redirect:/estudiantes/lista";
+    }
+
+    @GetMapping("/estudiante/{estudianteId}")
+    public List<CuotaPago> listarCuotasDeEstudiante(@PathVariable Long estudianteId) {
+        return cuotaPagoService.listarCuotasDeEstudiante(estudianteId);
     }
 
 

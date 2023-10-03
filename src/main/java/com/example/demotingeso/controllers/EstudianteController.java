@@ -27,7 +27,7 @@ public class EstudianteController {
     public String procesarFormularioRegistro(@ModelAttribute Estudiante estudiante) {
         System.out.println(estudiante);
         estudianteService.registrarEstudiante(estudiante);
-        return "listaEstudiante";
+        return "redirect:/estudiantes/lista";
     }
 
     @GetMapping("/lista")
@@ -52,6 +52,8 @@ public class EstudianteController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
 }
 

@@ -1,5 +1,6 @@
 package com.example.demotingeso.entities;
 
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -13,6 +14,11 @@ public class PlanillaPago {
     private List<Estudiante> estudiantesPagos;
     private BigDecimal montoTotal; // Declare montoTotal property
     private List<EstudiantePago> estudiantes; // Declare estudiantes property
+
+    private Double descuentoPorPromedio;
+
+    @ManyToOne
+    private Estudiante estudiante;
 
     public PlanillaPago() {
         this.mes = mes;

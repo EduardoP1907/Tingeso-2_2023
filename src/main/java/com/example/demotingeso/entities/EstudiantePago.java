@@ -61,4 +61,7 @@ public class EstudiantePago {
     @ManyToOne
     @JoinColumn(name = "estudiante_id") // Nombre de la columna que hace referencia a Estudiante
     private Estudiante estudiante;
+
+    @ManyToOne
+    private CuotaPago cuotaPago;
 }

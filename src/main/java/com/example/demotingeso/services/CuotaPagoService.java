@@ -1,24 +1,45 @@
 package com.example.demotingeso.services;
 
+import com.example.demotingeso.Excepciones.EstudianteNotFoundException;
 import com.example.demotingeso.entities.CuotaPago;
 import com.example.demotingeso.entities.Estudiante;
 import com.example.demotingeso.repositories.CuotaPagoRepository;
+import com.example.demotingeso.repositories.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class CuotaPagoService {
     private final EstudianteService estudianteService;
     private final CuotaPagoRepository cuotaPagoRepository;
+    private  EstudianteRepository estudianteRepository;
 
     @Autowired
     public CuotaPagoService(EstudianteService estudianteService, CuotaPagoRepository cuotaPagoRepository) {
         this.estudianteService =  estudianteService;
         this.cuotaPagoRepository = cuotaPagoRepository;
+        this.estudianteRepository = estudianteRepository;
+
+    }
+    public List<CuotaPago> listarCuotasDeEstudiante(Long estudianteId) {
+        // Aquí implementamos la lógica para listar las cuotas de un estudiante
+        // Primero, debemos obtener el estudiante por su ID
+        // Luego, buscamos todas las cuotas asociadas a ese estudiante
+        // Supongamos que tienes una relación entre Estudiante y CuotaPago en tus entidades
+
+        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(estudianteId); // Implementa este método según tus necesidades
+        if (estudiante == null) {
+            throw new EstudianteNotFoundException("No se encontró un estudiante con el ID proporcionado.");
+        }
+
+        List<CuotaPago> cuotasDelEstudiante = cuotaPagoRepository.findByEstudiante(estudiante);
+
+        return cuotasDelEstudiante;
     }
 
     public BigDecimal generarCuotasDePago(Long estudianteId) {
@@ -60,7 +81,7 @@ public class CuotaPagoService {
         // Aquí ya tienes el monto total con descuentos
         // Ahora puedes calcular el número de cuotas y el monto de cada cuota según tus reglas
 
-        // Por ejemplo, generamos 12 cuotas mensuales
+        // Por ejemplo, generamos 10 cuotas mensuales
         int numeroCuotas = 10;
         BigDecimal montoCuota = montoTotalConDescuentos.divide(BigDecimal.valueOf(numeroCuotas), 2, RoundingMode.HALF_UP);
         LocalDate fechaVencimiento = LocalDate.now().plusMonths(1); // Primera cuota vence en un mes
@@ -79,8 +100,7 @@ public class CuotaPagoService {
         }
         return montoMatricula;
     }
-
-
-
 }
+
+
 
