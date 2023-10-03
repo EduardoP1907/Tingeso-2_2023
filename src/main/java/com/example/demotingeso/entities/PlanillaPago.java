@@ -1,9 +1,11 @@
 package com.example.demotingeso.entities;
 
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+
 import lombok.Data;
 
+
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.List;
 @Data

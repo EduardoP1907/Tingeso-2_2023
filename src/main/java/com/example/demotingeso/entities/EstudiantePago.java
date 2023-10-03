@@ -1,7 +1,9 @@
 package com.example.demotingeso.entities;
 
-import jakarta.persistence.*;
 
+
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity

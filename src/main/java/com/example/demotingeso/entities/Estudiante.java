@@ -1,15 +1,16 @@
 package com.example.demotingeso.entities;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.List;
 
 
 @Entity
-@Table (name = "estudiante")
+@Table(name = "estudiante")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

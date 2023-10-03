@@ -1,7 +1,11 @@
 package com.example.demotingeso.entities;
 
-import jakarta.persistence.*;
 
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
