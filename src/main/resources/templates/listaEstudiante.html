@@ -1,7 +1,7 @@
 !DOCTYPE html>
 <html>
 <head>
-  <title>Lista de Estudiantes</title>
+    <title>Lista de Estudiantes</title>
 </head>
 <body>
 <h1>Lista de Estudiantes</h1>
@@ -9,27 +9,27 @@
 <!-- Crear una tabla para mostrar la lista de estudiantes -->
 
 <div class="container-sm">
-  <table class="table">
-    <thead class="thead-dark">
-    <tr>
-      <th>ID</th>
-      <th>nombres</th>
-      <th>apellidos</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="estudiante:${estudiantes}">
-      <td th:text="${estudiante.id}"></td>
-      <td th:text="${estudiante.nombres}"></td>
-      <td th:text="${estudiante.apellidos}"></td>
-      <td>
-        <a class="btn btn-primary" href="#" role="button">Editar</a>
-        <a class="btn btn-danger" href="#" role="button">Eliminar</a>
-        <a class="btn btn-primary" href="#" role="button">Ver Cuotas</a>--
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>nombres</th>
+            <th>apellidos</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estudiante:${estudiantes}">
+            <td th:text="${estudiante.id}"></td>
+            <td th:text="${estudiante.nombres}"></td>
+            <td th:text="${estudiante.apellidos}"></td>
+            <td>
+                <a class="btn btn-primary" href="#" role="button">Editar</a>
+                <a class="btn btn-danger" href="#" role="button">Eliminar</a>
+                <a class="btn btn-primary" href="#" role="button">Ver Cuotas</a>--
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

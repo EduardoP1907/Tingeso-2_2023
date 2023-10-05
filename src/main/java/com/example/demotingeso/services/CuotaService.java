@@ -1,32 +1,34 @@
 package com.example.demotingeso.services;
 
+import com.example.demotingeso.Excepciones.CuotaPagoAlreadyPaidException;
+import com.example.demotingeso.Excepciones.CuotaPagoNotFoundException;
 import com.example.demotingeso.Excepciones.EstudianteNotFoundException;
-import com.example.demotingeso.entities.CuotaPago;
+import com.example.demotingeso.entities.Cuota;
 import com.example.demotingeso.entities.Estudiante;
-import com.example.demotingeso.repositories.CuotaPagoRepository;
+import com.example.demotingeso.repositories.CuotaRepository;
 import com.example.demotingeso.repositories.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class CuotaPagoService {
+public class CuotaService {
     private final EstudianteService estudianteService;
-    private final CuotaPagoRepository cuotaPagoRepository;
-    private  EstudianteRepository estudianteRepository;
+    private final CuotaRepository cuotaRepository;
+    private EstudianteRepository estudianteRepository;
 
     @Autowired
-    public CuotaPagoService(EstudianteService estudianteService, CuotaPagoRepository cuotaPagoRepository) {
-        this.estudianteService =  estudianteService;
-        this.cuotaPagoRepository = cuotaPagoRepository;
+    public CuotaService(EstudianteService estudianteService, CuotaRepository cuotaRepository) {
+        this.estudianteService = estudianteService;
+        this.cuotaRepository = cuotaRepository;
         this.estudianteRepository = estudianteRepository;
 
     }
-    public List<CuotaPago> listarCuotasDeEstudiante(Long estudianteId) {
+
+    public List<Cuota> listarCuotasDeEstudiante(Long estudianteId) {
         // Aquí implementamos la lógica para listar las cuotas de un estudiante
         // Primero, debemos obtener el estudiante por su ID
         // Luego, buscamos todas las cuotas asociadas a ese estudiante
@@ -37,12 +39,12 @@ public class CuotaPagoService {
             throw new EstudianteNotFoundException("No se encontró un estudiante con el ID proporcionado.");
         }
 
-        List<CuotaPago> cuotasDelEstudiante = cuotaPagoRepository.findByEstudiante(estudiante);
+        List<Cuota> cuotasDelEstudiante = cuotaRepository.findByEstudiante(estudiante);
 
         return cuotasDelEstudiante;
     }
 
-    public BigDecimal generarCuotasDePago(Long estudianteId) {
+    public int generarCuotasDePago(Long estudianteId) {
         Estudiante estudiante = estudianteService.obtenerEstudiantePorId(estudianteId);
         // Obtiene el tipo de colegio de procedencia del estudiante como una cadena de texto
         String tipoColegioProcedencia = estudiante.getTipoColegioProcedencia();
@@ -52,53 +54,68 @@ public class CuotaPagoService {
         int anosDesdeEgreso = estudianteService.anosDesdeEgreso(estudiante);
 
         // Define el monto de la matrícula y el arancel de estudio
-        BigDecimal montoMatricula = BigDecimal.valueOf(70000);
-        BigDecimal montoArancel = BigDecimal.valueOf(1500000);
+        int montoMatricula = 70000;
+        int montoArancel = 1500000;
 
         // Aplica el descuento de acuerdo al tipo de colegio de procedencia
-        BigDecimal descuentoTipoColegio = BigDecimal.ZERO;
+        double descuentoTipoColegio = 0;
         if ("Municipal".equals(tipoColegioProcedencia)) {
-            descuentoTipoColegio = montoArancel.multiply(BigDecimal.valueOf(0.20)); // 20% de descuento
+            descuentoTipoColegio = (montoArancel * 0.2); // 20% de descuento
         } else if ("Subvencionado".equals(tipoColegioProcedencia)) {
-            descuentoTipoColegio = montoArancel.multiply(BigDecimal.valueOf(0.10)); // 10% de descuento
+            descuentoTipoColegio = montoArancel * 0.1; // 10% de descuento
         }
 
         // Aplica el descuento de acuerdo a los años desde que egresó del colegio
-        BigDecimal descuentoAnosEgreso = BigDecimal.ZERO;
+        Double descuentoAnosEgreso = 0.0;
         if (anosDesdeEgreso < 1) {
-            descuentoAnosEgreso = montoArancel.multiply(BigDecimal.valueOf(0.15)); // 15% de descuento
+            descuentoAnosEgreso = montoArancel*0.15; // 15% de descuento
         } else if (anosDesdeEgreso >= 1 && anosDesdeEgreso <= 2) {
-            descuentoAnosEgreso = montoArancel.multiply(BigDecimal.valueOf(0.08)); // 8% de descuento
+            descuentoAnosEgreso = montoArancel*0.08; // 8% de descuento
         } else if (anosDesdeEgreso >= 3 && anosDesdeEgreso <= 4) {
-            descuentoAnosEgreso = montoArancel.multiply(BigDecimal.valueOf(0.04)); // 4% de descuento
+            descuentoAnosEgreso = montoArancel*0.04; // 4% de descuento
         }
 
         // Calcula el monto total con descuentos
-        BigDecimal montoTotalConDescuentos = montoMatricula.add(montoArancel)
-                .subtract(descuentoTipoColegio)
-                .subtract(descuentoAnosEgreso);
+        double montoTotalConDescuentos = montoMatricula+montoArancel
+                -descuentoTipoColegio
+                -descuentoAnosEgreso;
 
         // Aquí ya tienes el monto total con descuentos
         // Ahora puedes calcular el número de cuotas y el monto de cada cuota según tus reglas
 
         // Por ejemplo, generamos 10 cuotas mensuales
-        int numeroCuotas = 10;
-        BigDecimal montoCuota = montoTotalConDescuentos.divide(BigDecimal.valueOf(numeroCuotas), 2, RoundingMode.HALF_UP);
+        Double numeroCuotas = 10.0;
+        double montoCuota = montoTotalConDescuentos/numeroCuotas;
         LocalDate fechaVencimiento = LocalDate.now().plusMonths(1); // Primera cuota vence en un mes
 
         for (int i = 1; i <= numeroCuotas; i++) {
-            CuotaPago cuota = new CuotaPago();
+            Cuota cuota = new Cuota();
             cuota.setMonto(montoCuota);
-            cuota.setNumeroCuota(i);
+            cuota.setNumeroCuota(numeroCuotas);
             cuota.setFechaVencimiento(fechaVencimiento);
             cuota.setPagada(false); // Inicialmente no pagada
             cuota.setEstudiante(estudiante);
+            cuota.setFechaPago(LocalDate.now());
 
-            cuotaPagoRepository.save(cuota);
+            cuotaRepository.save(cuota);
 
             fechaVencimiento = fechaVencimiento.plusMonths(1); // Siguiente cuota en el próximo mes
         }
         return montoMatricula;
+    }
+    public void registrarPagoCuota(Long cuotaPagoId) {
+        // Obtener la cuota de arancel por su ID
+        Cuota cuota = cuotaRepository.findById(cuotaPagoId)
+                .orElseThrow(() -> new CuotaPagoNotFoundException("No se encontró la cuota de arancel con el ID proporcionado."));
+
+        // Validar que la cuota no esté pagada previamente
+        if (cuota.isPagada()) {
+            throw new CuotaPagoAlreadyPaidException("La cuota de arancel ya ha sido pagada.");
+        }
+
+        // Marcar la cuota como pagada
+        cuota.setPagada(true);
+        cuotaRepository.save(cuota);
     }
 }
 

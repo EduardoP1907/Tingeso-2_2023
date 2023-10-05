@@ -22,7 +22,6 @@ public class EstudianteController {
     }
 
 
-
     @PostMapping("/registro")
     public String procesarFormularioRegistro(@ModelAttribute Estudiante estudiante) {
         System.out.println(estudiante);
@@ -44,15 +43,15 @@ public class EstudianteController {
     public ResponseEntity<Estudiante> obtenerEstudiante(@PathVariable Long id, Model model) {
         // Utiliza el servicio para obtener un estudiante por su ID
 
-        try{ Estudiante estudiante = estudianteService.obtenerEstudiantePorId(id);
+        try {
+            Estudiante estudiante = estudianteService.obtenerEstudiantePorId(id);
 
             return ResponseEntity.ok(estudiante);
 
-        }catch (EstudianteNotFoundException e){
+        } catch (EstudianteNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
-
 
 
 }

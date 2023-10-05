@@ -1,11 +1,12 @@
 package com.example.demotingeso.entities;
 
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -39,23 +40,19 @@ public class Estudiante {
     private boolean pagado;
 
 
-
 // ...
 
 
     public String getTipoColegioProcedencia() {
         return tipoColegioDeProcedencia;
     }
+
     public void setTipoColegioProcedencia(String tipoColegioProcedencia) {
         this.tipoColegioDeProcedencia = tipoColegioProcedencia;
     }
 
     @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
-    private List<CuotaPago> cuotasPagos;
-
-
-    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<EstudiantePago> estudiantePagos;
+    private List<Cuota> cuotasPagos;
 
     public int getAnoEgresoColegio() {
         return anoEgresoColegio;

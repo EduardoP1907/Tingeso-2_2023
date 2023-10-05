@@ -1,0 +1,23 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Estudiante por RUT</title>
+</head>
+<body>
+<h1>Buscar Estudiante por RUT</h1>
+
+<!-- Formulario para ingresar el RUT del estudiante -->
+<form action="/buscar-estudiante" method="post">
+    <label for="rut">RUT del Estudiante:</label>
+    <input type="text" id="rut" name="rut" required>
+    <button type="submit">Buscar</button>
+</form>
+
+<!-- Resultado de la búsqueda -->
+<div id="resultado">
+    <!-- Aquí mostrarás los datos del estudiante si se encuentra -->
+</div>
+</body>
+</html>

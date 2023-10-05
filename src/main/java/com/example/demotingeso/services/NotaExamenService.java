@@ -48,7 +48,7 @@ public class NotaExamenService {
                 double puntajeObtenido = row.getCell(2).getNumericCellValue();
 
                 // Obtenemos al estudiante por su RUT
-                Estudiante estudiante = estudianteService.obtenerestudianteporut(rut);
+                Estudiante estudiante = estudianteService.obtenerestudianteporrut(rut);
 
                 if (estudiante != null) {
                     // Creamos una nueva NotaExamen y la guardamos en la base de datos

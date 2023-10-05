@@ -5,13 +5,11 @@ import com.example.demotingeso.entities.Estudiante;
 import com.example.demotingeso.repositories.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.NoResultException;
+import jakarta.persistence.*;
 
 
 @Service
@@ -30,8 +28,9 @@ public class EstudianteService {
 
     public Estudiante registrarEstudiante(Estudiante estudiante) {
 
-         return estudianteRepository.save(estudiante);
+        return estudianteRepository.save(estudiante);
     }
+
     /*public ArrayList<Estudiante> obtenerestudianteporut(){
         return (ArrayList<Estudiante>) estudianteRepository.findAll();
     }*/
@@ -66,10 +65,10 @@ public class EstudianteService {
     }
 
     public boolean eliminarUsuario(Long id) {
-        try{
+        try {
             estudianteRepository.deleteById(id);
             return true;
-        }catch(Exception err){
+        } catch (Exception err) {
             return false;
         }
     }
@@ -77,22 +76,21 @@ public class EstudianteService {
 
     public int anosDesdeEgreso(Estudiante estudiante) {
 
-    // Reemplaza 1L con el ID del estudiante que deseas obtener
+        // Reemplaza 1L con el ID del estudiante que deseas obtener
 
         int anoEgreso = estudiante.getAnoEgresoColegio();
 
-    // Obtiene la fecha actual
-         LocalDate fechaActual = LocalDate.now();
+        // Obtiene la fecha actual
+        LocalDate fechaActual = LocalDate.now();
 
-    // Obtiene el año actual
+        // Obtiene el año actual
         int anoActual = fechaActual.getYear();
 
-    // Calcula los años transcurridos desde que egresó
+        // Calcula los años transcurridos desde que egresó
         int anosDesdeEgreso = anoActual - anoEgreso;
 
         return anosDesdeEgreso;
     }
-
 
 
 }

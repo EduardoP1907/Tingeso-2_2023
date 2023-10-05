@@ -1,8 +1,9 @@
 package com.example.demotingeso.entities;
 
 
+import jakarta.persistence.*;
 
-import javax.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
@@ -17,13 +18,16 @@ public class NotaExamen {
 
     private LocalDate fechaExamen;
     private double puntajeObtenido;
-    @Column (nullable = false)
+
+    @Column(nullable = false)
     public void setEstudiante(Estudiante estudiante) {
     }
-    @Column (nullable = false)
+
+    @Column(nullable = false)
     public void setFechaExamen(LocalDate fechaExamen) {
     }
-    @Column (nullable = false)
+
+    @Column(nullable = false)
     public void setPuntajeObtenido(double puntajeObtenido) {
     }
 
