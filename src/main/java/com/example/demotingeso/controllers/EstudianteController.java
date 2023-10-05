@@ -26,7 +26,7 @@ public class EstudianteController {
     public String procesarFormularioRegistro(@ModelAttribute Estudiante estudiante) {
         System.out.println(estudiante);
         estudianteService.registrarEstudiante(estudiante);
-        return "redirect:/estudiantes/lista";
+        return "registrar";
     }
 
     @GetMapping("/lista")

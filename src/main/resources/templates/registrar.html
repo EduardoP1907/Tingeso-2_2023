@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Top Education Preuniversitario</title>
+    <script>
+        function actualizarMaxCuotas() {
+            var tipoColegio = document.getElementById("tipoColegioDeProcedencia").value;
+            var maxCuotasSelect = document.getElementById("NumeroCuotas");
+
+            // Restablecer el número máximo de cuotas permitidas
+            maxCuotasSelect.innerHTML = "";
+
+            if (tipoColegio === "Municipal") {
+                // Para colegios municipales, máximo 10 cuotas
+                for (var i = 1; i <= 10; i++) {
+                    var option = document.createElement("option");
+                    option.value = i;
+                    option.text = i;
+                    maxCuotasSelect.appendChild(option);
+                }
+            } else if (tipoColegio === "Subvencionado") {
+                // Para colegios subvencionados, máximo 7 cuotas
+                for (var i = 1; i <= 7; i++) {
+                    var option = document.createElement("option");
+                    option.value = i;
+                    option.text = i;
+                    maxCuotasSelect.appendChild(option);
+                }
+            } else if (tipoColegio === "Privado") {
+                // Para colegios privados, máximo 3 cuotas
+                for (var i = 1; i <= 3; i++) {
+                    var option = document.createElement("option");
+                    option.value = i;
+                    option.text = i;
+                    maxCuotasSelect.appendChild(option);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Top Education Preuniversitario</h1>
+<h2>Registro de estudiantes</h2>
+<form action="/estudiantes/registro" method="post">
+    <label for="rut">RUT:</label>
+    <input type="text" id="rut" name="rut" required><br><br>
+
+    <label for="nombres">Nombres:</label>
+    <input type="text" id="nombres" name="nombres" required><br><br>
+
+    <label for="apellidos">Apellidos:</label>
+    <input type="text" id="apellidos" name="apellidos" required><br><br>
+
+    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+    <input type="date" id="fechaNacimiento" name="fechaNacimiento" required><br><br>
+
+    <label for="anoEgresoColegio">Año de Egreso:</label>
+    <input type="number" id="anoEgresoColegio" name="anoEgresoColegio" required><br><br>
+
+    <label for="nombreColegio">Nombre Colegio:</label>
+    <input type="text" id="nombreColegio" name="nombreColegio" required><br><br>
+
+    <label for="tipoColegioDeProcedencia">Tipo de colegio de procedencia:</label>
+    <select id="tipoColegioDeProcedencia" name="tipoColegioDeProcedencia" required onchange="actualizarMaxCuotas()">
+        <option value="Municipal">Municipal</option>
+        <option value="Subvencionado">Subvencionado</option>
+        <option value="Privado">Privado</option>
+    </select>
+
+    <label for="NumeroCuotas">NumeroCuotas:</label>
+    <select id="NumeroCuotas" name="NumeroCuotas" required>
+        <!-- Este select se llenará dinámicamente según la selección del tipo de colegio -->
+    </select>
+
+    <button type="submit">Registrar</button>
+</form>
+</body>
+</html>

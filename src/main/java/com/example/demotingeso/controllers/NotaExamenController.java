@@ -22,7 +22,7 @@ public class NotaExamenController {
         this.notaExamenService = notaExamenService;
     }
 
-    /*@PostMapping("/importar")
+    @PostMapping("/importar")
     public ResponseEntity<String> importarNotas(@RequestParam("archivo") MultipartFile archivo) {
         try {
             notaExamenService.importarNotasDesdeExcel(archivo);
@@ -31,5 +31,5 @@ public class NotaExamenController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al importar notas.");
         }
-    }*/
+    }
 }
