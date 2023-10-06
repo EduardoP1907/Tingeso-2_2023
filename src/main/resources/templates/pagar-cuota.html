@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>Detalles del Estudiante</title>
+</head>
+<body>
+<h1>Detalles del Estudiante</h1>
+
+<!-- Mostrar los datos del estudiante por su ID -->
+<h2>Datos del Estudiante</h2>
+<p>ID del Estudiante: {{estudianteEncontrado.id}}</p>
+<p>Nombre: {{estudianteEncontrado.nombres}}</p>
+<p>Apellidos: {{estudianteEncontrado.apellidos}}</p>
+<p>RUT: {{estudianteEncontrado.rut}}</p>
+<!-- Agrega más campos según los datos del estudiante -->
+
+<!-- Mostrar las cuotas del estudiante -->
+<h2>Cuotas del Estudiante</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Número de Cuota</th>
+    <th>Monto</th>
+    <th>Fecha de Vencimiento</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- Itera sobre las cuotas del estudiante -->
+  {{#estudianteEncontrado.cuotasPagos}}
+  <tr>
+    <td>{{numeroCuota}}</td>
+    <td>{{monto}}</td>
+    <td>{{fechaVencimiento}}</td>
+    <td>{{#if pagada}}Pagada{{else}}No Pagada{{/if}}</td>
+    <td>
+      <!-- Botón para pagar la cuota -->
+      {{#unless pagada}}
+      <button onclick="pagarCuota(id)">Pagar</button>
+      {{/unless}}
+    </td>
+  </tr>
+  {{/estudianteEncontrado.cuotasPagos}}
+  </tbody>
+</table>
+
+<!-- Función JavaScript para pagar una cuota -->
+<script>
+  function pagarCuota(cuotaId) {
+    fetch('/cuotas/pagar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `cuotaId=${cuotaId}`,
+    })
+            .then(response => response.json())
+            .then(data => {
+              // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito o error
+              alert(data);
+              // Recargar la página para actualizar la información de la cuota
+              location.reload();
+            })
+            .catch(error => {
+              console.error('Error al pagar la cuota:', error);
+            });
+  }
+</script>
+
+</body>
+</html>

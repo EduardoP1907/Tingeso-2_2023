@@ -7,7 +7,14 @@
 <h1>Menú Principal</h1>
 
 <button onclick="window.location.href = 'reporte_estudiante.html';">Reporte Estudiante</button>
-<button onclick="window.location.href = 'pagar_cuota.html';">Pagar Cuota</button>
-<button onclick="window.location.href = 'registrar.html';">Registrar Estudiante</button>
+<button onclick="window.location.href = 'buscarestudianteporrut';">Pagar Cuota</button>
+<button onclick="window.location.href = 'registro.html';">Registrar Estudiante</button>
+
+<h2>Importar Archivo de Notas</h2>
+<form action="/notas-examen/importar" method="post" enctype="multipart/form-data">
+  <input type="file" name="archivo" accept=".xlsx, .xls"> <!-- Acepta archivos con extensiones .xlsx y .xls -->
+  <button type="submit">Importar</button>
+</form>
 </body>
 </html>
+

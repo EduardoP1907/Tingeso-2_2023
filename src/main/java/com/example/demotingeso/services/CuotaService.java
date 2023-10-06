@@ -117,6 +117,19 @@ public class CuotaService {
         cuota.setPagada(true);
         cuotaRepository.save(cuota);
     }
+    public void pagarCuota(Long cuotaId) {
+        Cuota cuota = cuotaRepository.findById(cuotaId)
+                .orElseThrow(() -> new CuotaPagoNotFoundException("No se encontró la cuota de arancel con el ID proporcionado."));
+
+        if (cuota.isPagada()) {
+            throw new CuotaPagoAlreadyPaidException("La cuota de arancel ya ha sido pagada.");
+        }
+
+        // Realiza las acciones necesarias para marcar la cuota como pagada
+        cuota.setPagada(true);
+        cuota.setFechaPago(LocalDate.now());
+        cuotaRepository.save(cuota);
+    }
 }
 
 
