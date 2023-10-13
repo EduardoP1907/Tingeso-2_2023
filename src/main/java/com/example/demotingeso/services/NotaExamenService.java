@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
+
 import java.util.Iterator;
-import java.util.List;
+
 
 
 @Service
@@ -42,16 +42,16 @@ public class NotaExamenService {
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
 
-                // Suponemos que las columnas son: RUT, Fecha del examen, Puntaje obtenido
+
                 String rut = row.getCell(0).getStringCellValue();
                 LocalDate fechaExamen = LocalDate.ofInstant(row.getCell(1).getDateCellValue().toInstant(), ZoneId.systemDefault());
                 double puntajeObtenido = row.getCell(2).getNumericCellValue();
 
-                // Obtenemos al estudiante por su RUT
+
                 Estudiante estudiante = estudianteService.obtenerestudianteporrut(rut);
 
                 if (estudiante != null) {
-                    // Creamos una nueva NotaExamen y la guardamos en la base de datos
+
                     NotaExamen notaExamen = new NotaExamen();
                     notaExamen.setEstudiante(estudiante);
                     notaExamen.setFechaExamen(fechaExamen);
@@ -61,7 +61,7 @@ public class NotaExamenService {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            throw e; // Lanzar la excepción nuevamente para manejarla en el controlador si es necesario
+            throw e;
         }
     }
 }

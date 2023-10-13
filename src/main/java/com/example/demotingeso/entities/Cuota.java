@@ -24,6 +24,10 @@ public class Cuota {
     @ManyToOne
     private Estudiante estudiante;
 
+    @ManyToOne
+    @JoinColumn(name = "planilla_pago_id") // Nombre de la columna que hace referencia a la planilla de pago
+    private PlanillaPago planillaPago;
+
 }
 
 

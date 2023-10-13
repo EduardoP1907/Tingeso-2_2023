@@ -31,8 +31,12 @@ public class NotaExamen {
     public void setPuntajeObtenido(double puntajeObtenido) {
     }
 
-    // Getters y setters
+    public LocalDate getFechaExamen() {
+        return fechaExamen;
+    }
 
-    // Constructores
+    public double getPuntajeObtenido() {
+        return puntajeObtenido;
+    }
 }
 

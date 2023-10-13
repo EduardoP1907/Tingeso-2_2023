@@ -38,6 +38,10 @@ public class Estudiante {
     private String nombreColegio;
     @Column(nullable = false)
     private boolean pagado;
+    @Column(nullable = false)
+    private double arancelMensual;
+    @Column(nullable = false)
+    private int numeroCuotas;
 
 
 // ...
@@ -57,6 +61,16 @@ public class Estudiante {
     public int getAnoEgresoColegio() {
         return anoEgresoColegio;
     }
+
+    public double getArancelMensual() {
+        return arancelMensual;
+    }
+
+    public void setArancelMensual(double arancelMensual) {
+        this.arancelMensual = arancelMensual;
+    }
+
+
 }
 
 

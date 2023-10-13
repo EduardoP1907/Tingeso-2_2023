@@ -5,35 +5,26 @@
     <script>
         function actualizarMaxCuotas() {
             var tipoColegio = document.getElementById("tipoColegioDeProcedencia").value;
-            var maxCuotasSelect = document.getElementById("NumeroCuotas");
-
-            // Restablecer el número máximo de cuotas permitidas
-            maxCuotasSelect.innerHTML = "";
+            var maxCuotasSelect = document.getElementById("numeroCuotas");
+            var maxCuotas;
 
             if (tipoColegio === "Municipal") {
-                // Para colegios municipales, máximo 10 cuotas
-                for (var i = 1; i <= 10; i++) {
-                    var option = document.createElement("option");
-                    option.value = i;
-                    option.text = i;
-                    maxCuotasSelect.appendChild(option);
-                }
+                maxCuotas = 10;
             } else if (tipoColegio === "Subvencionado") {
-                // Para colegios subvencionados, máximo 7 cuotas
-                for (var i = 1; i <= 7; i++) {
-                    var option = document.createElement("option");
-                    option.value = i;
-                    option.text = i;
-                    maxCuotasSelect.appendChild(option);
-                }
+                maxCuotas = 7;
             } else if (tipoColegio === "Privado") {
-                // Para colegios privados, máximo 3 cuotas
-                for (var i = 1; i <= 3; i++) {
-                    var option = document.createElement("option");
-                    option.value = i;
-                    option.text = i;
-                    maxCuotasSelect.appendChild(option);
-                }
+                maxCuotas = 3;
+            }
+
+
+            maxCuotasSelect.innerHTML = "";
+
+
+            for (var i = 1; i <= maxCuotas; i++) {
+                var option = document.createElement("option");
+                option.value = i;
+                option.text = i;
+                maxCuotasSelect.appendChild(option);
             }
         }
     </script>
@@ -67,9 +58,9 @@
         <option value="Privado">Privado</option>
     </select>
 
-    <label for="NumeroCuotas">NumeroCuotas:</label>
-    <select id="NumeroCuotas" name="NumeroCuotas" required>
-        <!-- Este select se llenará dinámicamente según la selección del tipo de colegio -->
+    <label for="numeroCuotas">Número de Cuotas:</label>
+    <select id="numeroCuotas" name="numeroCuotas" required>
+
     </select>
 
     <button type="submit">Registrar</button>

@@ -2,6 +2,7 @@ package com.example.demotingeso.controllers;
 
 import com.example.demotingeso.Excepciones.EstudianteNotFoundException;
 import com.example.demotingeso.entities.Estudiante;
+import com.example.demotingeso.entities.PlanillaPago;
 import com.example.demotingeso.services.CuotaService;
 import com.example.demotingeso.services.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +17,21 @@ import java.util.List;
 @RequestMapping("/estudiantes")
 public class EstudianteController {
     private final EstudianteService estudianteService;
-    private  CuotaService cuotaService;
+    private CuotaService cuotaService;
 
     @Autowired
-    public EstudianteController(EstudianteService estudianteService) {
+    public EstudianteController(EstudianteService estudianteService, CuotaService cuotaService) {
         this.estudianteService = estudianteService;
+        this.cuotaService = cuotaService;
     }
 
 
     @PostMapping("/registro")
-    public String procesarFormularioRegistro(@ModelAttribute Estudiante estudiante) {
+    public String procesarFormularioRegistro(@ModelAttribute Estudiante estudiante, @RequestParam int numeroCuotas) {
         System.out.println(estudiante);
         estudianteService.registrarEstudiante(estudiante);
-        cuotaService.generarCuotasDePago(estudiante.getId());
-        return "registro";
+        cuotaService.generarCuotasDePago(estudiante.getId(), numeroCuotas);
+        return "index";
     }
 
     @GetMapping("/lista")
@@ -44,7 +46,7 @@ public class EstudianteController {
     @GetMapping("/obtenerestudiante/{id}")
 
     public ResponseEntity<Estudiante> obtenerEstudiante(@PathVariable Long id, Model model) {
-        // Utiliza el servicio para obtener un estudiante por su ID
+
 
         try {
             Estudiante estudiante = estudianteService.obtenerEstudiantePorId(id);
@@ -55,19 +57,44 @@ public class EstudianteController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("registro")
+    public String registro(Model model){
+        return "registro";
+    }
+
     @GetMapping("/buscar-estudiante")
-    public String buscarEstudiantePorRut(@RequestParam("rut") String rut, Model model) {
-        // Realiza la búsqueda del estudiante por su RUT
+    public String mostrarBusquedaEstudiante(Model model) {
+
+        return "buscarestudianteporrut";
+    }
+
+    @GetMapping("/buscar-estudiante2")
+    public String mostrarBusquedaEstudiante2(Model model) {
+
+        return "buscarestudianteporrut2";
+    }
+
+    @PostMapping("/buscar-estudiante2")
+    public String buscarEstudiantePorRut(@RequestParam String rut, Model model) {
+
         Estudiante estudiante = estudianteService.obtenerestudianteporrut(rut);
 
         if (estudiante != null) {
-            // Si se encuentra el estudiante, lo agregamos al modelo y lo mostramos en una vista
-            model.addAttribute("estudianteEncontrado", estudiante);
-            return "vista-estudiante-encontrado"; // Reemplaza con el nombre de tu vista
-        } else {
-            // Si no se encuentra el estudiante, puedes mostrar un mensaje de error o redirigir a otra vista
-            return "vista-estudiante-no-encontrado"; // Reemplaza con el nombre de tu vista
+
+            PlanillaPago planilla = new PlanillaPago();
+            planilla.setEstudiante(estudiante);
+            planilla.setRutEstudiante(estudiante.getRut());
+            planilla.setCuotas(estudiante.getCuotasPagos());
+
         }
+
+
+        return "redirect:/estudiantes/pagar-cuota";
+    }
+    @GetMapping("pagar-cuota")
+    public String pagarcuota(Model model){
+        return "pagarcuotas";
     }
 
 

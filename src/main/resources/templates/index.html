@@ -6,10 +6,15 @@
 <body>
 <h1>Menú Principal</h1>
 
-<button onclick="window.location.href = 'reporte_estudiante.html';">Reporte Estudiante</button>
-<button onclick="window.location.href = 'buscarestudianteporrut';">Pagar Cuota</button>
-<button onclick="window.location.href = 'registro.html';">Registrar Estudiante</button>
-
+<form method="get" th:action="@{/estudiantes/buscar-estudiante}">
+  <button class="btn btn-primary">Reporte Estudiante</button>
+</form>
+<form method="get" th:action="@{/estudiantes/buscar-estudiante2}">
+  <button class="btn btn-primary">Pagar cuota</button>
+</form>
+<form method="get" th:action="@{/estudiantes/registro}">
+  <button class="btn btn-primary">Registrar Estudiante</button>
+</form>
 <h2>Importar Archivo de Notas</h2>
 <form action="/notas-examen/importar" method="post" enctype="multipart/form-data">
   <input type="file" name="archivo" accept=".xlsx, .xls"> <!-- Acepta archivos con extensiones .xlsx y .xls -->

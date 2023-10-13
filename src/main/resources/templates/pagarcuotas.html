@@ -1,0 +1,53 @@
+<h1>Planilla de Pago</h1>
+
+<!-- Mostrar los datos del estudiante y su RUT -->
+<h2>Datos del Estudiante</h2>
+<p>ID del Estudiante: ${planilla.estudiante.id}</p>
+<p>RUT: ${planilla.rutEstudiante}</p>
+
+<!-- Mostrar las cuotas del estudiante -->
+<h2>Cuotas del Estudiante</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Número de Cuota</th>
+    <th>Monto</th>
+    <th>Fecha de Vencimiento</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr th:each="cuota : ${planilla.cuotas}">
+    <td>${cuota.numeroCuota}</td>
+    <td>${cuota.monto}</td>
+    <td>${cuota.fechaVencimiento}</td>
+    <td th:text="${cuota.pagada ? 'Pagado' : 'No Pagado'}"></td>
+    <td>
+      <!-- Botón para pagar la cuota (JavaScript) -->
+      <button th:if="${!cuota.pagada}" th:onclick="'pagarCuota(' + ${cuota.id} + ')'" th:text="Pagar"></button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script>
+  function pagarCuota(cuotaId) {
+    fetch('/cuotas/pagar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'cuotaId=' + cuotaId,
+    })
+            .then(response => response.json())
+            .then(data => {
+              alert(data);
+              location.reload();
+            })
+            .catch(error => {
+              console.error('Error al pagar la cuota:', error);
+            });
+  }
+</script>

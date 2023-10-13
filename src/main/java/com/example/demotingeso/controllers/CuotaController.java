@@ -3,7 +3,9 @@ package com.example.demotingeso.controllers;
 import com.example.demotingeso.Excepciones.CuotaPagoAlreadyPaidException;
 import com.example.demotingeso.Excepciones.CuotaPagoNotFoundException;
 import com.example.demotingeso.entities.Cuota;
+import com.example.demotingeso.entities.Estudiante;
 import com.example.demotingeso.services.CuotaService;
+import com.example.demotingeso.services.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,13 @@ import java.util.List;
 public class CuotaController {
 
     private final CuotaService cuotaService;
+    private EstudianteService estudianteService;
 
 
     @Autowired
-    public CuotaController(CuotaService cuotaService) {
+    public CuotaController(CuotaService cuotaService, EstudianteService estudianteService) {
         this.cuotaService = cuotaService;
+        this.estudianteService = estudianteService;
     }
 
 
@@ -29,8 +33,9 @@ public class CuotaController {
 
 
     @PostMapping("/generar-cuotas/{estudianteId}")
-    public String generarCuotasDePago(@PathVariable Long estudianteId) {
-        cuotaService.generarCuotasDePago(estudianteId);
+    public String generarCuotasDePago(@PathVariable Long estudianteId, int numeroCuotas) {
+        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(estudianteId);
+        cuotaService.generarCuotasDePago(estudianteId, numeroCuotas);
         return "redirect:/estudiantes/lista";
     }
 
