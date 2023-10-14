@@ -47,7 +47,7 @@ public class CuotaController {
     public ResponseEntity<String> pagarCuota(@RequestParam Long cuotaId) {
         try {
             cuotaService.pagarCuota(cuotaId);
-            return ResponseEntity.ok("Cuota pagada con éxito.");
+            return new ResponseEntity<String>("pagada", HttpStatus.OK);
         } catch (CuotaPagoNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la cuota.");
         } catch (CuotaPagoAlreadyPaidException e) {
@@ -56,6 +56,14 @@ public class CuotaController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar el pago de la cuota.");
         }
+    }
+    @PostMapping("/cuotas/pagar")
+    public String pagarCuotavista(@RequestParam("cuotaId") Long cuotaId) {
+        Cuota cuota = cuotaService.obtenerCuotaPorId(cuotaId);
+        cuota.setPagada(true);
+        cuotaService.guardarCuota(cuota);
+
+        return "pagarcuotas";
     }
 
 }

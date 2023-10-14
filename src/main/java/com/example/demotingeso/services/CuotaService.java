@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -122,7 +123,26 @@ public class CuotaService {
     public void guardarCuota(Cuota cuota) {
         cuotaRepository.save(cuota);
     }
+    public List<Cuota> obtenerTodasLasCuotasDelEstudiante(Estudiante estudiante) {
+        return cuotaRepository.findByEstudiante(estudiante);
+    }
+
+    public List<Cuota> obtenerCuotasPendientesPorEstudiante(Estudiante estudiante) {
+        List<Cuota> cuotasPendientes = new ArrayList<>();
+
+
+        List<Cuota> todasLasCuotasDelEstudiante = obtenerTodasLasCuotasDelEstudiante(estudiante);
+
+        for (Cuota cuota : todasLasCuotasDelEstudiante) {
+            if (!cuota.isPagada()) {
+                cuotasPendientes.add(cuota);
+            }
+        }
+
+        return cuotasPendientes;
+    }
 }
+
 
 
 

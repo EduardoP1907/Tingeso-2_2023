@@ -19,6 +19,7 @@ public class PlanillaPago {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
     private int mes;
     private int ano;
@@ -29,6 +30,7 @@ public class PlanillaPago {
     private Estudiante estudiante;
 
     @OneToMany(mappedBy = "planillaPago")
+    @Column(nullable = false)
     private List<Cuota> cuotas;
 
     public PlanillaPago(int mes, int ano, Double montoTotal, Estudiante estudiante, List<Cuota> cuotas) {

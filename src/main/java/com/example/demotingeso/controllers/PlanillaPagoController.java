@@ -49,7 +49,6 @@ public class PlanillaPagoController {
             Double montoTotal = cuotas.stream().mapToDouble(Cuota::getMonto).sum();
             planilla.setMontoTotal(montoTotal);
 
-
             planillaPagoService.guardarPlanillaPago(planilla);
 
             model.addAttribute("planilla", planilla);

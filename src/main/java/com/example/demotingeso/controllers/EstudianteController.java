@@ -1,8 +1,9 @@
 package com.example.demotingeso.controllers;
 
+
 import com.example.demotingeso.Excepciones.EstudianteNotFoundException;
+import com.example.demotingeso.entities.Cuota;
 import com.example.demotingeso.entities.Estudiante;
-import com.example.demotingeso.entities.PlanillaPago;
 import com.example.demotingeso.services.CuotaService;
 import com.example.demotingeso.services.EstudianteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,25 +76,16 @@ public class EstudianteController {
         return "buscarestudianteporrut2";
     }
 
-    @PostMapping("/buscar-estudiante2")
-    public String buscarEstudiantePorRut(@RequestParam String rut, Model model) {
-
+    @GetMapping("/buscar-estudiante-y-pagar")
+    public String verCuotasYPagar(@RequestParam String rut, Model model) {
         Estudiante estudiante = estudianteService.obtenerestudianteporrut(rut);
 
         if (estudiante != null) {
-
-            PlanillaPago planilla = new PlanillaPago();
-            planilla.setEstudiante(estudiante);
-            planilla.setRutEstudiante(estudiante.getRut());
-            planilla.setCuotas(estudiante.getCuotasPagos());
-
+            List<Cuota> cuotas = cuotaService.obtenerCuotasPendientesPorEstudiante(estudiante);
+            model.addAttribute("estudiante", estudiante);
+            model.addAttribute("cuotas", cuotas);
         }
 
-
-        return "redirect:/estudiantes/pagar-cuota";
-    }
-    @GetMapping("pagar-cuota")
-    public String pagarcuota(Model model){
         return "pagarcuotas";
     }
 

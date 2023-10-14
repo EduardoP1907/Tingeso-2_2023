@@ -70,6 +70,13 @@ public class Estudiante {
         this.arancelMensual = arancelMensual;
     }
 
+    public String getNombres() {
+        return nombres;
+    }
+    public void setNombre(String nombres) {
+        this.nombres = nombres;
+    }
+
 
 }
 

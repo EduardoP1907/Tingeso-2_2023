@@ -1,53 +1,65 @@
-<h1>Planilla de Pago</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalles del Estudiante y Pago de Cuotas</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Detalles del Estudiante</h1>
+<p>Nombre del Estudiante: <span th:text="${estudiante.nombres}"></span></p>
+<p>RUT del Estudiante: <span th:text="${estudiante.rut}"></span></p>
 
-<!-- Mostrar los datos del estudiante y su RUT -->
-<h2>Datos del Estudiante</h2>
-<p>ID del Estudiante: ${planilla.estudiante.id}</p>
-<p>RUT: ${planilla.rutEstudiante}</p>
-
-<!-- Mostrar las cuotas del estudiante -->
-<h2>Cuotas del Estudiante</h2>
+<h2>Cuotas Pendientes</h2>
 <table>
   <thead>
   <tr>
     <th>Número de Cuota</th>
     <th>Monto</th>
-    <th>Fecha de Vencimiento</th>
-    <th>Estado</th>
-    <th>Acciones</th>
+    <th>Descripción</th>
+    <th>Fecha</th>
+    <th>Pagar</th>
   </tr>
   </thead>
   <tbody>
-
-  <tr th:each="cuota : ${planilla.cuotas}">
-    <td>${cuota.numeroCuota}</td>
-    <td>${cuota.monto}</td>
-    <td>${cuota.fechaVencimiento}</td>
-    <td th:text="${cuota.pagada ? 'Pagado' : 'No Pagado'}"></td>
-    <td>
-      <!-- Botón para pagar la cuota (JavaScript) -->
-      <button th:if="${!cuota.pagada}" th:onclick="'pagarCuota(' + ${cuota.id} + ')'" th:text="Pagar"></button>
-    </td>
-  </tr>
+  <th:block th:each="cuota, rowStat : ${cuotas}">
+    <tr>
+      <td th:text="${rowStat.count}"></td>
+      <td th:text="${cuota.monto}"></td>
+      <td>
+        <span th:text="${cuota.pagada ? 'Pagada' : 'No Pagada'}"></span>
+      </td>
+      <td th:text="${cuota.fechaVencimiento}"></td>
+      <td>
+        <form id="cuotaPagoForm" th:action="@{/cuotas/pagar}" method="post">
+          <input type="hidden" name="cuotaId" th:value="${cuota.id}">
+          <button type="submit" class="pagar-button">Pagar</button>
+        </form>
+      </td>
+    </tr>
+  </th:block>
   </tbody>
 </table>
 
-<script>
-  function pagarCuota(cuotaId) {
-    fetch('/cuotas/pagar', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: 'cuotaId=' + cuotaId,
-    })
-            .then(response => response.json())
-            .then(data => {
-              alert(data);
-              location.reload();
-            })
-            .catch(error => {
-              console.error('Error al pagar la cuota:', error);
-            });
-  }
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("form#cuotaPagoForm").on('submit', function(e) {
+      e.preventDefault(); // Evita el envío del formulario
+
+      var $form = $(this);
+      var cuotaId = $form.find('input[name="cuotaId"]').val();
+
+      // Realiza una solicitud POST con AJAX para pagar la cuota
+      $.post($form.attr('action'), $form.serialize(), function(data) {
+        if (data === "pagada") {
+          // Actualiza la descripción de la cuota y desactiva el botón de pagar
+          var cuotaRow = $form.closest('tr');
+          cuotaRow.find('td:eq(2)').text('Pagada');
+          cuotaRow.find('.pagar-button').prop('disabled', true);
+        }
+      });
+    });
+  });
 </script>
+</body>
+</html>
