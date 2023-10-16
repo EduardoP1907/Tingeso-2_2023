@@ -1,5 +1,6 @@
 package com.example.demotingeso.controllers;
 
+import com.example.demotingeso.Excepciones.EstudianteNotFoundException;
 import com.example.demotingeso.entities.Cuota;
 import com.example.demotingeso.entities.Estudiante;
 import com.example.demotingeso.entities.PlanillaPago;
@@ -7,11 +8,11 @@ import com.example.demotingeso.services.CuotaService;
 import com.example.demotingeso.services.EstudianteService;
 import com.example.demotingeso.services.PlanillaPagoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,31 +30,28 @@ public class PlanillaPagoController {
         this.cuotaService = cuotaService;
         this.planillaPagoService = planillaPagoService;
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<PlanillaPago> getPlanillaPago(@PathVariable Long id) {
+        PlanillaPago planillaPago = planillaPagoService.getPlanillaPago(id);
+        if (planillaPago == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(planillaPago, HttpStatus.OK);
+    }
+
+    @PostMapping("/generar")
+    public ResponseEntity<PlanillaPago> generarPlanillaPago(@RequestParam Long estudianteId, @RequestParam int mes, @RequestParam int ano) {
+        try {
+            PlanillaPago planillaPago = planillaPagoService.generarPlanillaDePago(estudianteId, mes, ano);
+            return new ResponseEntity<>(planillaPago, HttpStatus.CREATED);
+        } catch (EstudianteNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/buscar-estudiante")
     public String mostrarBusquedaEstudiante(Model model) {
         return "buscarestudianteporrut2";
     }
 
-    @GetMapping("/buscar-estudiante2")
-    public String buscarEstudiantePorRut(@RequestParam String rut, Model model) {
-        Estudiante estudiante = estudianteService.obtenerestudianteporrut(rut);
-
-        if (estudiante != null) {
-            List<Cuota> cuotas = cuotaService.obtenerCuotasPorEstudiante(estudiante);
-            PlanillaPago planilla = new PlanillaPago();
-            planilla.setEstudiante(estudiante);
-            planilla.setRutEstudiante(estudiante.getRut());
-            planilla.setCuotas(cuotas);
-
-            Double montoTotal = cuotas.stream().mapToDouble(Cuota::getMonto).sum();
-            planilla.setMontoTotal(montoTotal);
-
-            planillaPagoService.guardarPlanillaPago(planilla);
-
-            model.addAttribute("planilla", planilla);
-        }
-
-        return "pagarcuotas";
-    }
 }

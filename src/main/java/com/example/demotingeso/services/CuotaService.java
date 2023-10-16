@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,6 +144,57 @@ public class CuotaService {
 
         return cuotasPendientes;
     }
+    public double calcularMontoArancel(Estudiante estudiante) {
+        double arancelBase = 1500000;
+        double montoArancel = 0.0;
+
+
+        if (estudiante.getTipoColegioProcedencia().equals("Municipal")) {
+            montoArancel = arancelBase - (arancelBase * 0.20);
+        } else if (estudiante.getTipoColegioProcedencia().equals("Subvencionado")) {
+            montoArancel = arancelBase - (arancelBase * 0.10);
+        } else {
+            montoArancel = arancelBase;
+        }
+
+        int anosEgreso = estudiante.getAnoEgresoColegio();
+        if (anosEgreso < 1) {
+            montoArancel -= arancelBase * 0.15;
+        } else if (anosEgreso >= 1 && anosEgreso <= 2) {
+            montoArancel -= arancelBase * 0.08;
+        } else if (anosEgreso >= 3 && anosEgreso <= 4) {
+            montoArancel -= arancelBase * 0.04;
+        }
+
+
+        double promedioNotas = estudiante.promedioNotas();
+        if (promedioNotas >= 950) {
+            montoArancel *= 0.90;
+        } else if (promedioNotas >= 900) {
+            montoArancel *= 0.95;
+        } else if (promedioNotas >= 850) {
+            montoArancel *= 0.98;
+        }
+
+
+        List<Cuota> cuota = estudiante.getCuotasPagos();
+        int mesesAtraso = calcularMesesAtraso(cuota);
+        if (mesesAtraso > 3) {
+            montoArancel *= 1.15;
+        }
+
+        return montoArancel;
+    }
+    public int calcularMesesAtraso(List<Cuota> fechaVencimiento) {
+        LocalDate fechaActual = LocalDate.now();
+        YearMonth ymVencimiento = YearMonth.from((TemporalAccessor) fechaVencimiento);
+        YearMonth ymActual = YearMonth.from(fechaActual);
+
+        long mesesAtraso = ChronoUnit.MONTHS.between(ymVencimiento, ymActual);
+
+        return (int) Math.max(mesesAtraso, 0);
+    }
+
 }
 
 

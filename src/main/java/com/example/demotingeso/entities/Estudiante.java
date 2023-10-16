@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+
 import java.util.List;
 
 
@@ -42,9 +43,12 @@ public class Estudiante {
     private double arancelMensual;
     @Column(nullable = false)
     private int numeroCuotas;
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
+    private List<NotaExamen> notas;
 
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
+    private List<Cuota> cuotasPagos;
 
-// ...
 
 
     public String getTipoColegioProcedencia() {
@@ -54,9 +58,6 @@ public class Estudiante {
     public void setTipoColegioProcedencia(String tipoColegioProcedencia) {
         this.tipoColegioDeProcedencia = tipoColegioProcedencia;
     }
-
-    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
-    private List<Cuota> cuotasPagos;
 
     public int getAnoEgresoColegio() {
         return anoEgresoColegio;
@@ -76,8 +77,24 @@ public class Estudiante {
     public void setNombre(String nombres) {
         this.nombres = nombres;
     }
+    public double promedioNotas() {
+        if (notas == null || notas.isEmpty()) {
+            return 0.0; // Si no hay notas, el promedio es cero.
+        }
 
+        double totalPuntajes = 0.0;
+        for (NotaExamen nota : notas) {
+            totalPuntajes += nota.getPuntajeObtenido();
+        }
 
+        return totalPuntajes / notas.size();
+    }
+
+    public void setPromedioNotas(double promedio) {
+    }
+    public List<Cuota> getCuotasPagos() {
+        return cuotasPagos;
+    }
 }
 
 

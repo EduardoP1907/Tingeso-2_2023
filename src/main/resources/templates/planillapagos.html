@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Planilla de Pago</title>
+</head>
+<body>
+<h1>Planilla de Pago</h1>
+<form th:action="@{/planilla/buscar}" method="get">
+  <label for="rut">RUT del estudiante:</label>
+  <input type="text" id="rut" name="rut" required>
+  <button type="submit">Buscar</button>
+</form>
+
+<div th:if="${planillaPago != null}">
+  <h2>Planilla de Pago</h2>
+  <p>Mes: <span th:text="${planillaPago.mes}"></span></p>
+  <p>Año: <span th:text="${planillaPago.ano}"></span></p>
+  <p>Monto Total: <span th:text="${planillaPago.montoTotal}"></span></p>
+  <p>RUT Estudiante: <span th:text="${planillaPago.estudiante.rut}"></span></p>
+</div>
+
+<div th:if="${planillaPago == null}">
+  <p>Planilla de pago no encontrada.</p>
+</div>
+</body>
+</html>

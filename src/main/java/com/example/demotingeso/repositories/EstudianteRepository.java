@@ -13,6 +13,8 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
 
 
     List<Estudiante> findByPagadoFalse();
+
+    Estudiante findByRut(String rutEstudiante);
 }
 
 
