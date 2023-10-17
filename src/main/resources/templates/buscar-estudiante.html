@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Búsqueda de Estudiante</title>
+</head>
+<body>
+<h1>Búsqueda de Estudiante</h1>
+
+<form method="get" th:action="@{/planillapago/generar-planilla}">
+  <label for="rut">Ingrese el RUT del estudiante:</label>
+  <input type="text" id="rut" name="rut" required>
+  <button type="submit">Buscar</button>
+</form>
+</body>
+</html>

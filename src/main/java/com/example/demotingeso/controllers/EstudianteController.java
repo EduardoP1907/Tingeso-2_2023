@@ -64,12 +64,6 @@ public class EstudianteController {
         return "registro";
     }
 
-    @GetMapping("/buscar-estudiante")
-    public String mostrarBusquedaEstudiante(Model model) {
-
-        return "buscarestudianteporrut";
-    }
-
     @GetMapping("/buscar-estudiante2")
     public String mostrarBusquedaEstudiante2(Model model) {
 

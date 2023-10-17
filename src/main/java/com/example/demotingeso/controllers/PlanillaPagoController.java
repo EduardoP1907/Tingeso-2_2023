@@ -39,7 +39,7 @@ public class PlanillaPagoController {
         return new ResponseEntity<>(planillaPago, HttpStatus.OK);
     }
 
-    @PostMapping("/generar")
+    @PostMapping("/generar-planilla")
     public ResponseEntity<PlanillaPago> generarPlanillaPago(@RequestParam Long estudianteId, @RequestParam int mes, @RequestParam int ano) {
         try {
             PlanillaPago planillaPago = planillaPagoService.generarPlanillaDePago(estudianteId, mes, ano);
@@ -51,7 +51,11 @@ public class PlanillaPagoController {
 
     @GetMapping("/buscar-estudiante")
     public String mostrarBusquedaEstudiante(Model model) {
-        return "buscarestudianteporrut2";
+        return "buscar-estudiante";
     }
-
+    @GetMapping("/generar-planilla")
+    public String mostrarGenerarPlanilla(Model model) {
+        model.addAttribute("estudiante", new Estudiante());
+        return "planillapagos";
+    }
 }

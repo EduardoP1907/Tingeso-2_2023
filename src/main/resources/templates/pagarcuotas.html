@@ -44,15 +44,15 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $("form#cuotaPagoForm").on('submit', function(e) {
-      e.preventDefault(); // Evita el envío del formulario
+      e.preventDefault();
 
       var $form = $(this);
       var cuotaId = $form.find('input[name="cuotaId"]').val();
 
-      // Realiza una solicitud POST con AJAX para pagar la cuota
+
       $.post($form.attr('action'), $form.serialize(), function(data) {
         if (data === "pagada") {
-          // Actualiza la descripción de la cuota y desactiva el botón de pagar
+
           var cuotaRow = $form.closest('tr');
           cuotaRow.find('td:eq(2)').text('Pagada');
           cuotaRow.find('.pagar-button').prop('disabled', true);
